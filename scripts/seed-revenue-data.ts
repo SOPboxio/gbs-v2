@@ -41,7 +41,12 @@ async function seedRevenueData() {
       
       project = newProject;
     }
-    
+
+    if (!project) {
+      console.error('Failed to get or create project');
+      return;
+    }
+
     console.log('Project ID:', project.id);
     
     // Generate monthly revenue data for the last 12 months
