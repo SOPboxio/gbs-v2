@@ -514,7 +514,8 @@ Available Recipes: ${this.state.getAvailableRecipes().length} / ${this.state.dat
           alert('🤝 It was a tie! A random winner was chosen.');
         }
 
-        const recipe = this.state.data.recipes.find(r => r.id === winnerId);
+        const recipe = this.state.data.recipes.find((r: Recipe) => r.id === winnerId);
+        if (!recipe) return;
         this.closeVoteModal();
         this.state.recordMeal(winnerId);
         alert(`🗳️ The votes are in! Tonight we're having ${recipe.name}.`);
