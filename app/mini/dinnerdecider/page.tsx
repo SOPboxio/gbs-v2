@@ -5,6 +5,48 @@ import Link from "next/link";
 
 export default function DinnerDeciderPage() {
   useEffect(() => {
+    // Type definitions
+    interface Recipe {
+      id: number;
+      name: string;
+      ingredients: string[];
+    }
+
+    interface Ingredient {
+      name: string;
+      quantity: string;
+      status: string;
+    }
+
+    interface AppData {
+      recipes: Recipe[];
+      ingredients: Record<string, Ingredient>;
+      mealHistory: Array<{ recipeId: number; date: string }>;
+      familyMembers: string[];
+      lastMealIngredients: string[];
+    }
+
+    interface CachedElements {
+      recipeGrid: HTMLElement | null;
+      inventoryList: HTMLElement | null;
+      shoppingList: HTMLElement | null;
+      familyMembers: HTMLTextAreaElement | null;
+      voteBtn: HTMLButtonElement | null;
+      spinBtn: HTMLButtonElement | null;
+      rouletteBtn: HTMLButtonElement | null;
+      saveSettingsBtn: HTMLButtonElement | null;
+      resetBtn: HTMLButtonElement | null;
+      debugBtn: HTMLButtonElement | null;
+      voteModal: HTMLElement | null;
+      closeModalBtn: HTMLButtonElement | null;
+      submitVotesBtn: HTMLButtonElement | null;
+      votersContainer: HTMLElement | null;
+      spinnerModal: HTMLElement | null;
+      closeSpinnerBtn: HTMLButtonElement | null;
+      spinWheelBtn: HTMLButtonElement | null;
+      spinnerCanvas: HTMLCanvasElement | null;
+    }
+
     // Configuration
     const CONFIG = {
       RECIPE_COOLDOWN_DAYS: 3,
@@ -76,7 +118,7 @@ export default function DinnerDeciderPage() {
 
     // State Management
     class AppState {
-      data: any;
+      data: AppData;
       listeners: Array<() => void>;
 
       constructor() {
@@ -186,9 +228,9 @@ export default function DinnerDeciderPage() {
     // UI Controller
     class UIController {
       state: AppState;
-      elements: any;
+      elements: CachedElements;
       isSpinning?: boolean;
-      availableRecipes?: any[];
+      availableRecipes?: Recipe[];
 
       constructor(state: AppState) {
         this.state = state;
