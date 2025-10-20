@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GoBeStrong v2
+
+A personal project management system for tracking vibecoding projects and SaaS businesses.
+
+## Features
+
+### Public Site (gobestrong.com)
+- Personal landing page with project showcase
+- Dynamic project cards pulled from database
+- Contact form
+- Responsive design with your personal branding
+
+### Admin Dashboard (admin.gobestrong.com)
+- Secure authentication with Supabase
+- Full CRUD operations for projects
+- User invitation system for project collaboration
+- Project notes and history tracking
+- Integration framework for metrics and costs (coming soon)
+
+## Tech Stack
+- **Frontend**: Next.js 14 with App Router, TypeScript, Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Auth, Real-time)
+- **Deployment**: Vercel (recommended)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+- Supabase account
 
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone [your-repo-url]
+cd gbs-v2
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up Supabase:
+   - Follow the instructions in `SUPABASE_SETUP.md`
+   - Create your `.env.local` file with your credentials
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run the development server:
+```bash
+npm run dev
+```
 
-## Learn More
+5. Open:
+   - Public site: http://localhost:3000
+   - Admin panel: http://localhost:3000/admin
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+gbs-v2/
+├── app/
+│   ├── admin/          # Admin dashboard
+│   ├── api/           # API routes
+│   ├── contact/       # Contact page
+│   ├── projects/      # Projects page
+│   └── page.tsx       # Home page
+├── components/        # Reusable components
+├── lib/              # Utilities and configs
+│   └── supabase/     # Supabase client setup
+├── public/           # Static assets
+└── supabase/         # Database migrations
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Database Schema
 
-## Deploy on Vercel
+The system uses a comprehensive database schema including:
+- **projects**: Main project information
+- **project_access**: User permissions per project
+- **project_notes**: Timestamped notes with authors
+- **project_history**: Audit trail of all changes
+- **Integration tables**: For future metrics and cost tracking
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Vercel Deployment
+1. Push your code to GitHub
+2. Import the project in Vercel
+3. Add environment variables from `.env.local`
+4. Deploy!
+
+### Admin Subdomain Setup
+Configure admin.gobestrong.com to point to the same deployment. The middleware will handle routing based on the subdomain.
+
+## Security
+- Row Level Security (RLS) enabled on all tables
+- User authentication required for admin access
+- Project-based access control
+- Encrypted credential storage for integrations
+
+## Future Features
+- GitHub integration for version tracking
+- Google Analytics and other metrics providers
+- Real-time cost monitoring and alerts
+- Advanced reporting and visualizations
+- File attachments and media management
+
+## Contributing
+This is a personal project, but suggestions are welcome!
+
+## License
+Private project - All rights reserved
