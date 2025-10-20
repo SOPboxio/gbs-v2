@@ -76,6 +76,9 @@ export default function DinnerDeciderPage() {
 
     // State Management
     class AppState {
+      data: any;
+      listeners: Array<() => void>;
+
       constructor() {
         this.data = this.loadData();
         this.listeners = [];
@@ -182,7 +185,12 @@ export default function DinnerDeciderPage() {
 
     // UI Controller
     class UIController {
-      constructor(state) {
+      state: AppState;
+      elements: any;
+      isSpinning?: boolean;
+      availableRecipes?: any[];
+
+      constructor(state: AppState) {
         this.state = state;
         this.elements = this.cacheElements();
         this.attachEventListeners();
