@@ -263,38 +263,39 @@ export default function DinnerDeciderPage() {
       }
 
       attachEventListeners() {
-        this.elements.recipeGrid.addEventListener('click', (e) => {
-          const card = e.target.closest('.recipe-card');
+        this.elements.recipeGrid?.addEventListener('click', (e) => {
+          const card = (e.target as HTMLElement).closest('.recipe-card');
           if (card && !card.classList.contains('disabled')) {
-            const recipeId = parseInt(card.dataset.recipeId);
+            const recipeId = parseInt((card as HTMLElement).dataset.recipeId || '0');
             this.handleRecipeClick(recipeId);
           }
         });
 
-        this.elements.inventoryList.addEventListener('change', (e) => {
-          if (e.target.type === 'checkbox') {
-            const key = e.target.dataset.key;
-            const status = e.target.checked ? 'got_it' : 'need_it';
+        this.elements.inventoryList?.addEventListener('change', (e) => {
+          const target = e.target as HTMLInputElement;
+          if (target.type === 'checkbox') {
+            const key = target.dataset.key || '';
+            const status = target.checked ? 'got_it' : 'need_it';
             this.state.updateIngredient(key, status);
           }
         });
 
-        this.elements.saveSettingsBtn.addEventListener('click', () => this.saveSettings());
-        this.elements.resetBtn.addEventListener('click', () => this.resetHistory());
-        this.elements.debugBtn.addEventListener('click', () => this.showDebug());
-        this.elements.voteBtn.addEventListener('click', () => this.openVoteModal());
-        this.elements.spinBtn.addEventListener('click', () => this.openSpinnerModal());
-        this.elements.rouletteBtn.addEventListener('click', () => this.dinnerRoulette());
-        this.elements.closeModalBtn.addEventListener('click', () => this.closeVoteModal());
-        this.elements.submitVotesBtn.addEventListener('click', () => this.tallyVotes());
-        this.elements.closeSpinnerBtn.addEventListener('click', () => this.closeSpinnerModal());
-        this.elements.spinWheelBtn.addEventListener('click', () => this.spinWheel());
+        this.elements.saveSettingsBtn?.addEventListener('click', () => this.saveSettings());
+        this.elements.resetBtn?.addEventListener('click', () => this.resetHistory());
+        this.elements.debugBtn?.addEventListener('click', () => this.showDebug());
+        this.elements.voteBtn?.addEventListener('click', () => this.openVoteModal());
+        this.elements.spinBtn?.addEventListener('click', () => this.openSpinnerModal());
+        this.elements.rouletteBtn?.addEventListener('click', () => this.dinnerRoulette());
+        this.elements.closeModalBtn?.addEventListener('click', () => this.closeVoteModal());
+        this.elements.submitVotesBtn?.addEventListener('click', () => this.tallyVotes());
+        this.elements.closeSpinnerBtn?.addEventListener('click', () => this.closeSpinnerModal());
+        this.elements.spinWheelBtn?.addEventListener('click', () => this.spinWheel());
 
-        this.elements.voteModal.addEventListener('click', (e) => {
+        this.elements.voteModal?.addEventListener('click', (e) => {
           if (e.target === this.elements.voteModal) this.closeVoteModal();
         });
 
-        this.elements.spinnerModal.addEventListener('click', (e) => {
+        this.elements.spinnerModal?.addEventListener('click', (e) => {
           if (e.target === this.elements.spinnerModal) this.closeSpinnerModal();
         });
       }
@@ -310,22 +311,24 @@ export default function DinnerDeciderPage() {
         const recipes = this.state.data.recipes;
         let availableCount = 0;
 
-        this.elements.recipeGrid.innerHTML = recipes.map(recipe => {
-          const status = this.state.getRecipeStatus(recipe);
-          if (status.available) availableCount++;
+        if (this.elements.recipeGrid) {
+          this.elements.recipeGrid.innerHTML = recipes.map(recipe => {
+            const status = this.state.getRecipeStatus(recipe);
+            if (status.available) availableCount++;
 
-          return `
-            <div class="recipe-card ${status.available ? '' : 'disabled'}"
-                 data-recipe-id="${recipe.id}">
-              <h3>${recipe.name}</h3>
-              ${!status.available ? `<p class="reason">${status.reason}</p>` : ''}
-            </div>
-          `;
-        }).join('');
+            return `
+              <div class="recipe-card ${status.available ? '' : 'disabled'}"
+                   data-recipe-id="${recipe.id}">
+                <h3>${recipe.name}</h3>
+                ${!status.available ? `<p class="reason">${status.reason}</p>` : ''}
+              </div>
+            `;
+          }).join('');
+        }
 
-        this.elements.voteBtn.disabled = availableCount < 2;
-        this.elements.spinBtn.disabled = availableCount < 1;
-        this.elements.rouletteBtn.disabled = availableCount < 1;
+        if (this.elements.voteBtn) this.elements.voteBtn.disabled = availableCount < 2;
+        if (this.elements.spinBtn) this.elements.spinBtn.disabled = availableCount < 1;
+        if (this.elements.rouletteBtn) this.elements.rouletteBtn.disabled = availableCount < 1;
       }
 
       renderInventory() {
@@ -334,41 +337,47 @@ export default function DinnerDeciderPage() {
           ingredients[a].name.localeCompare(ingredients[b].name)
         );
 
-        this.elements.inventoryList.innerHTML = sortedKeys.map(key => {
-          const ing = ingredients[key];
-          const isLowStock = this.state.data.lastMealIngredients.includes(key);
-          const checked = ing.status === 'got_it';
+        if (this.elements.inventoryList) {
+          this.elements.inventoryList.innerHTML = sortedKeys.map(key => {
+            const ing = ingredients[key];
+            const isLowStock = this.state.data.lastMealIngredients.includes(key);
+            const checked = ing.status === 'got_it';
 
-          return `
-            <li class="inventory-item ${isLowStock ? 'low-stock' : ''}">
-              <div class="info">
-                <span class="name">${ing.name}</span>
-                <span class="quantity">${ing.quantity}</span>
-              </div>
-              <label class="toggle">
-                <input type="checkbox" data-key="${key}" ${checked ? 'checked' : ''}>
-                <span class="toggle-slider"></span>
-              </label>
-            </li>
-          `;
-        }).join('');
+            return `
+              <li class="inventory-item ${isLowStock ? 'low-stock' : ''}">
+                <div class="info">
+                  <span class="name">${ing.name}</span>
+                  <span class="quantity">${ing.quantity}</span>
+                </div>
+                <label class="toggle">
+                  <input type="checkbox" data-key="${key}" ${checked ? 'checked' : ''}>
+                  <span class="toggle-slider"></span>
+                </label>
+              </li>
+            `;
+          }).join('');
+        }
       }
 
       renderShoppingList() {
         const needItems = Object.values(this.state.data.ingredients)
           .filter(ing => ing.status === 'need_it');
 
-        if (needItems.length === 0) {
-          this.elements.shoppingList.innerHTML = '<li class="empty">✅ All stocked up!</li>';
-        } else {
-          this.elements.shoppingList.innerHTML = needItems
-            .map(ing => `<li>${ing.name} (${ing.quantity})</li>`)
-            .join('');
+        if (this.elements.shoppingList) {
+          if (needItems.length === 0) {
+            this.elements.shoppingList.innerHTML = '<li class="empty">✅ All stocked up!</li>';
+          } else {
+            this.elements.shoppingList.innerHTML = needItems
+              .map(ing => `<li>${ing.name} (${ing.quantity})</li>`)
+              .join('');
+          }
         }
       }
 
       renderSettings() {
-        this.elements.familyMembers.value = this.state.data.familyMembers.join('\\n');
+        if (this.elements.familyMembers) {
+          this.elements.familyMembers.value = this.state.data.familyMembers.join('\\n');
+        }
       }
 
       handleRecipeClick(recipeId: number) {
@@ -382,6 +391,7 @@ export default function DinnerDeciderPage() {
       }
 
       saveSettings() {
+        if (!this.elements.familyMembers) return;
         const input = this.elements.familyMembers.value;
         const members = input.split('\\n')
           .map(name => name.trim())
@@ -450,25 +460,32 @@ Available Recipes: ${this.state.getAvailableRecipes().length} / ${this.state.dat
           .map(r => `<option value="${r.id}">${r.name}</option>`)
           .join('');
 
-        this.elements.votersContainer.innerHTML = this.state.data.familyMembers
-          .map(member => `
-            <div class="voter-group">
-              <label for="vote-${member}">${member}'s Vote:</label>
-              <select id="vote-${member}">
-                <option value="">-- Choose a meal --</option>
-                ${optionsHtml}
-              </select>
-            </div>
-          `).join('');
+        if (this.elements.votersContainer) {
+          this.elements.votersContainer.innerHTML = this.state.data.familyMembers
+            .map(member => `
+              <div class="voter-group">
+                <label for="vote-${member}">${member}'s Vote:</label>
+                <select id="vote-${member}">
+                  <option value="">-- Choose a meal --</option>
+                  ${optionsHtml}
+                </select>
+              </div>
+            `).join('');
+        }
 
-        this.elements.voteModal.style.display = 'block';
+        if (this.elements.voteModal) {
+          this.elements.voteModal.style.display = 'block';
+        }
       }
 
       closeVoteModal() {
-        this.elements.voteModal.style.display = 'none';
+        if (this.elements.voteModal) {
+          this.elements.voteModal.style.display = 'none';
+        }
       }
 
       tallyVotes() {
+        if (!this.elements.votersContainer) return;
         const selects = this.elements.votersContainer.querySelectorAll('select');
         const votes = {};
 
@@ -514,18 +531,27 @@ Available Recipes: ${this.state.getAvailableRecipes().length} / ${this.state.dat
         this.availableRecipes = available;
         this.isSpinning = false;
         this.drawWheel();
-        this.elements.spinnerModal.style.display = 'block';
+        if (this.elements.spinnerModal) {
+          this.elements.spinnerModal.style.display = 'block';
+        }
       }
 
       closeSpinnerModal() {
-        this.elements.spinnerModal.style.display = 'none';
-        this.elements.spinnerCanvas.style.transform = 'rotate(0deg)';
+        if (this.elements.spinnerModal) {
+          this.elements.spinnerModal.style.display = 'none';
+        }
+        if (this.elements.spinnerCanvas) {
+          this.elements.spinnerCanvas.style.transform = 'rotate(0deg)';
+        }
       }
 
       drawWheel() {
         const canvas = this.elements.spinnerCanvas;
+        if (!canvas) return;
         const ctx = canvas.getContext('2d');
+        if (!ctx) return;
         const recipes = this.availableRecipes;
+        if (!recipes) return;
         const numSegments = recipes.length;
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
@@ -570,9 +596,12 @@ Available Recipes: ${this.state.getAvailableRecipes().length} / ${this.state.dat
 
       spinWheel() {
         if (this.isSpinning) return;
+        if (!this.availableRecipes) return;
 
         this.isSpinning = true;
-        this.elements.spinWheelBtn.disabled = true;
+        if (this.elements.spinWheelBtn) {
+          this.elements.spinWheelBtn.disabled = true;
+        }
 
         const recipes = this.availableRecipes;
         const numSegments = recipes.length;
@@ -584,6 +613,7 @@ Available Recipes: ${this.state.getAvailableRecipes().length} / ${this.state.dat
         const totalRotation = (spins * 360) + targetAngle;
 
         const canvas = this.elements.spinnerCanvas;
+        if (!canvas) return;
         const startTime = Date.now();
         const duration = 4000;
 
@@ -605,7 +635,9 @@ Available Recipes: ${this.state.getAvailableRecipes().length} / ${this.state.dat
               this.state.recordMeal(winner.id);
               alert(`🎉 The wheel has spoken! Tonight we're having ${winner.name}!`);
               this.isSpinning = false;
-              this.elements.spinWheelBtn.disabled = false;
+              if (this.elements.spinWheelBtn) {
+                this.elements.spinWheelBtn.disabled = false;
+              }
             }, 500);
           }
         };
