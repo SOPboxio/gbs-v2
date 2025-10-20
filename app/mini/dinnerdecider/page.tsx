@@ -244,21 +244,21 @@ export default function DinnerDeciderPage() {
           recipeGrid: document.getElementById('recipeGrid'),
           inventoryList: document.getElementById('inventoryList'),
           shoppingList: document.getElementById('shoppingList'),
-          familyMembers: document.getElementById('familyMembers'),
-          voteBtn: document.getElementById('voteBtn'),
-          spinBtn: document.getElementById('spinBtn'),
-          rouletteBtn: document.getElementById('rouletteBtn'),
-          saveSettingsBtn: document.getElementById('saveSettingsBtn'),
-          resetBtn: document.getElementById('resetBtn'),
-          debugBtn: document.getElementById('debugBtn'),
+          familyMembers: document.getElementById('familyMembers') as HTMLTextAreaElement | null,
+          voteBtn: document.getElementById('voteBtn') as HTMLButtonElement | null,
+          spinBtn: document.getElementById('spinBtn') as HTMLButtonElement | null,
+          rouletteBtn: document.getElementById('rouletteBtn') as HTMLButtonElement | null,
+          saveSettingsBtn: document.getElementById('saveSettingsBtn') as HTMLButtonElement | null,
+          resetBtn: document.getElementById('resetBtn') as HTMLButtonElement | null,
+          debugBtn: document.getElementById('debugBtn') as HTMLButtonElement | null,
           voteModal: document.getElementById('voteModal'),
-          closeModalBtn: document.getElementById('closeModalBtn'),
-          submitVotesBtn: document.getElementById('submitVotesBtn'),
+          closeModalBtn: document.getElementById('closeModalBtn') as HTMLButtonElement | null,
+          submitVotesBtn: document.getElementById('submitVotesBtn') as HTMLButtonElement | null,
           votersContainer: document.getElementById('votersContainer'),
           spinnerModal: document.getElementById('spinnerModal'),
-          closeSpinnerBtn: document.getElementById('closeSpinnerBtn'),
-          spinWheelBtn: document.getElementById('spinWheelBtn'),
-          spinnerCanvas: document.getElementById('spinnerCanvas')
+          closeSpinnerBtn: document.getElementById('closeSpinnerBtn') as HTMLButtonElement | null,
+          spinWheelBtn: document.getElementById('spinWheelBtn') as HTMLButtonElement | null,
+          spinnerCanvas: document.getElementById('spinnerCanvas') as HTMLCanvasElement | null
         };
       }
 
