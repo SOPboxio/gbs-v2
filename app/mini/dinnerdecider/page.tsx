@@ -487,7 +487,7 @@ Available Recipes: ${this.state.getAvailableRecipes().length} / ${this.state.dat
       tallyVotes() {
         if (!this.elements.votersContainer) return;
         const selects = this.elements.votersContainer.querySelectorAll('select');
-        const votes = {};
+        const votes: Record<string, number> = {};
 
         selects.forEach(select => {
           const recipeId = select.value;
