@@ -163,7 +163,7 @@ export default function DinnerDeciderPage() {
         this.data.lastMealIngredients = [];
       }
 
-      subscribe(callback) {
+      subscribe(callback: () => void) {
         this.listeners.push(callback);
       }
 
@@ -171,21 +171,21 @@ export default function DinnerDeciderPage() {
         this.listeners.forEach(callback => callback());
       }
 
-      updateIngredient(key, status) {
+      updateIngredient(key: string, status: string) {
         if (this.data.ingredients[key]) {
           this.data.ingredients[key].status = status;
-          this.data.lastMealIngredients = this.data.lastMealIngredients.filter(k => k !== key);
+          this.data.lastMealIngredients = this.data.lastMealIngredients.filter((k: string) => k !== key);
           this.saveData();
         }
       }
 
-      updateFamilyMembers(members) {
+      updateFamilyMembers(members: string[]) {
         this.data.familyMembers = members;
         this.saveData();
       }
 
-      recordMeal(recipeId) {
-        const recipe = this.data.recipes.find(r => r.id === recipeId);
+      recordMeal(recipeId: number) {
+        const recipe = this.data.recipes.find((r: Recipe) => r.id === recipeId);
         if (!recipe) return;
 
         const today = new Date().toISOString().split('T')[0];
@@ -194,7 +194,7 @@ export default function DinnerDeciderPage() {
         this.saveData();
       }
 
-      getRecipeStatus(recipe) {
+      getRecipeStatus(recipe: Recipe) {
         const missing = recipe.ingredients.filter(
           key => this.data.ingredients[key]?.status === 'need_it'
         );
@@ -371,8 +371,8 @@ export default function DinnerDeciderPage() {
         this.elements.familyMembers.value = this.state.data.familyMembers.join('\\n');
       }
 
-      handleRecipeClick(recipeId) {
-        const recipe = this.state.data.recipes.find(r => r.id === recipeId);
+      handleRecipeClick(recipeId: number) {
+        const recipe = this.state.data.recipes.find((r: Recipe) => r.id === recipeId);
         if (!recipe) return;
 
         if (confirm(`Choose ${recipe.name} for dinner tonight?`)) {
