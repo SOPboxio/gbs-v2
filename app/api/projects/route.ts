@@ -1,10 +1,11 @@
-import { createClient } from "@/lib/supabase/server";
+// import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
     // For now, return static data
     // Once Supabase is configured, we'll fetch from the database
+    // const supabase = await createClient();
     const projects = [
       {
         id: "sopbox",

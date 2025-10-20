@@ -46,7 +46,7 @@ export default function MiniProjectsPage() {
               or explore new ideas. Some are practical tools, others are just for fun. All are learning experiences.
             </p>
             <p>
-              Feel free to use any of these tools. They're all client-side applications that run in your browser.
+              Feel free to use any of these tools. They&apos;re all client-side applications that run in your browser.
             </p>
           </div>
         </div>

@@ -1,5 +1,22 @@
 import ProjectForm from "@/components/admin/project-form";
-import { createClient } from "@/lib/supabase/server";
+// import { createClient } from "@/lib/supabase/server";
+
+interface ProjectData {
+  title: string;
+  slug: string;
+  logo_url: string;
+  live_url: string;
+  description: string;
+  testimonial: string;
+  testimonial_author: string;
+  test_url: string;
+  status: string;
+  version: string;
+  latest_milestone: string;
+  best_metric: string;
+  contact_email: string;
+  is_published: boolean;
+}
 
 export default async function EditProjectPage({ params }: { params: { id: string } }) {
   // For now, we'll use static data
@@ -21,7 +38,7 @@ export default async function EditProjectPage({ params }: { params: { id: string
     is_published: true,
   };
 
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (data: ProjectData) => {
     "use server";
     // This is where we'll add the Supabase logic to update a project
     console.log("Updating project:", params.id, data);

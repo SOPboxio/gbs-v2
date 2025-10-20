@@ -2,10 +2,9 @@ import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-  
   // For now, we'll use static data. Once Supabase is set up with your credentials,
   // we'll fetch from the database
+  // const supabase = await createClient();
   const projects = [
     {
       id: "1",

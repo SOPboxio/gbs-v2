@@ -37,7 +37,7 @@ export async function GET(
     }
     
     return NextResponse.json(data);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -109,7 +109,7 @@ export async function POST(
       
       return NextResponse.json(data, { status: 201 });
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -144,7 +144,7 @@ export async function DELETE(
     }
     
     return NextResponse.json({ message: 'Metric deleted successfully' });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
