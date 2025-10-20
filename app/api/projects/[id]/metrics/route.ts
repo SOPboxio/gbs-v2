@@ -7,6 +7,17 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
+
+    // Check if Supabase is configured
+    const isSupabaseConfigured =
+      process.env.NEXT_PUBLIC_SUPABASE_URL &&
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+      process.env.NEXT_PUBLIC_SUPABASE_URL !== 'https://placeholder.supabase.co';
+
+    if (!isSupabaseConfigured) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+
     const supabase = await createClient();
 
     const searchParams = request.nextUrl.searchParams;
@@ -52,6 +63,17 @@ export async function POST(
 ) {
   try {
     const { id } = await params;
+
+    // Check if Supabase is configured
+    const isSupabaseConfigured =
+      process.env.NEXT_PUBLIC_SUPABASE_URL &&
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+      process.env.NEXT_PUBLIC_SUPABASE_URL !== 'https://placeholder.supabase.co';
+
+    if (!isSupabaseConfigured) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+
     const supabase = await createClient();
     const body = await request.json();
     
@@ -125,6 +147,17 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
+
+    // Check if Supabase is configured
+    const isSupabaseConfigured =
+      process.env.NEXT_PUBLIC_SUPABASE_URL &&
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+      process.env.NEXT_PUBLIC_SUPABASE_URL !== 'https://placeholder.supabase.co';
+
+    if (!isSupabaseConfigured) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 503 });
+    }
+
     const supabase = await createClient();
     const searchParams = request.nextUrl.searchParams;
     const metricId = searchParams.get('metric_id');
