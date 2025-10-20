@@ -18,7 +18,7 @@ export default async function AdminLayout({
     const { data: { user } } = await supabase.auth.getUser();
 
     // Redirect to login if not authenticated
-    if (!user && !children.toString().includes('auth')) {
+    if (!user && !children?.toString().includes('auth')) {
       redirect('/admin/auth/login');
     }
   }
