@@ -3,20 +3,21 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const supabase = await createClient();
-    
+
     const searchParams = request.nextUrl.searchParams;
     const metricName = searchParams.get('metric_name');
     const startDate = searchParams.get('start_date');
     const endDate = searchParams.get('end_date');
-    
+
     let query = supabase
       .from('project_metrics')
       .select('*')
-      .eq('project_id', params.id);
+      .eq('project_id', id);
     
     if (metricName) {
       query = query.eq('metric_name', metricName);
@@ -47,9 +48,10 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const supabase = await createClient();
     const body = await request.json();
     
@@ -66,7 +68,7 @@ export async function POST(
     const { data: existing } = await supabase
       .from('project_metrics')
       .select('id')
-      .eq('project_id', params.id)
+      .eq('project_id', id)
       .eq('metric_name', metric_name)
       .eq('metric_date', metric_date)
       .single();
@@ -94,7 +96,7 @@ export async function POST(
       const { data, error } = await supabase
         .from('project_metrics')
         .insert({
-          project_id: params.id,
+          project_id: id,
           metric_name,
           metric_value,
           metric_date,
@@ -119,25 +121,26 @@ export async function POST(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const supabase = await createClient();
     const searchParams = request.nextUrl.searchParams;
     const metricId = searchParams.get('metric_id');
-    
+
     if (!metricId) {
       return NextResponse.json(
         { error: 'Missing metric_id parameter' },
         { status: 400 }
       );
     }
-    
+
     const { error } = await supabase
       .from('project_metrics')
       .delete()
       .eq('id', metricId)
-      .eq('project_id', params.id);
+      .eq('project_id', id);
     
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
