@@ -18,7 +18,8 @@ interface ProjectData {
   is_published: boolean;
 }
 
-export default async function EditProjectPage({ params }: { params: { id: string } }) {
+export default async function EditProjectPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   // For now, we'll use static data
   // Once Supabase is configured, we'll fetch the actual project
   const project = {
@@ -41,7 +42,7 @@ export default async function EditProjectPage({ params }: { params: { id: string
   const handleSubmit = async (data: ProjectData) => {
     "use server";
     // This is where we'll add the Supabase logic to update a project
-    console.log("Updating project:", params.id, data);
+    console.log("Updating project:", id, data);
     
     // Once Supabase is configured:
     // const supabase = await createClient();
